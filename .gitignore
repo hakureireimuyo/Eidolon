@@ -3,6 +3,7 @@
 #   git submodule add <persona-seed-remote-url> PersonaSeed
 PersonaSeed/
 eidolon-character/
+eidolon-studio/
 
 # Agent 项目记忆（私有数据，不纳入仓库）
 .workbuddy/
