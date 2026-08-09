@@ -2,6 +2,10 @@
 # 本地开发阶段与之解耦；待远程仓库就绪后，用 submodule 正式关联：
 #   git submodule add <persona-seed-remote-url> PersonaSeed
 PersonaSeed/
+eidolon-character/
+
+# Agent 项目记忆（私有数据，不纳入仓库）
+.workbuddy/
 
 # Python
 __pycache__/

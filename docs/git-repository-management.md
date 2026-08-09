@@ -16,7 +16,8 @@ Eidolon 生态采用**多独立 Git 仓库**架构，各子项目从一开始就
 ```
 Eidolon/                          ← 顶层仓库（聚合与文档）
 │
-├── PersonaSeed/                  ← 独立 Git 仓库（角色数据格式）
+├── PersonaSeed/                  ← 独立 Git 仓库（数据容器协议）
+├── eidolon-character/            ← 独立 Git 仓库（角色身份模块：扩展规范 + 参考实现）
 ├── eidolon-runtime/              ← 独立 Git 仓库（未来）
 ├── eidolon-mind/                 ← 独立 Git 仓库（未来）
 ├── eidolon-world/                ← 独立 Git 仓库（未来）
@@ -154,8 +155,9 @@ Eidolon Runtime v1.0
 
 | 仓库 | 状态 | 位置 |
 |------|------|------|
-| Eidolon (顶层) | 待初始化 | `D:/Dev/Projects/Python/Eidolon/` |
-| PersonaSeed | 待初始化为独立仓库 | `Eidolon/PersonaSeed/` |
+| Eidolon (顶层) | 已初始化 | `D:/Dev/Projects/Python/Eidolon/` |
+| PersonaSeed | 独立仓库（已提交） | `Eidolon/PersonaSeed/` |
+| eidolon-character | 独立仓库（已提交） | `Eidolon/eidolon-character/` |
 | Eidolon Runtime | 未来 | `Eidolon/eidolon-runtime/` |
 | Eidolon Mind | 未来 | `Eidolon/eidolon-mind/` |
 
