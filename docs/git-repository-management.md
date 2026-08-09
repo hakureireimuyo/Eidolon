@@ -1,5 +1,7 @@
 # Git 仓库管理
 
+> 相关文档：[`project-responsibilities.md`](./project-responsibilities.md) —— 各独立项目的职责与能力边界。
+
 ## 1. 决策：多独立仓库，从项目之初即拆分
 
 Eidolon 生态采用**多独立 Git 仓库**架构，各子项目从一开始就拥有自己独立的仓库，而非在单一 Monorepo 中开发后再拆分。
