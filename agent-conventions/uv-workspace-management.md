@@ -10,7 +10,7 @@ uv workspace 天然匹配这个结构：
 
 | 问题 | pip + requirements-local.txt | uv workspace |
 |------|------------------------------|-------------|
-| 兄弟库依赖声明 | 外挂 `requirements-local.txt`（需手动在子目录执行） | `dependencies = ["personaseed"]` 直接写在 `pyproject.toml`，uv 自动在工作区内解析 |
+| 兄弟库依赖声明 | 外挂 `requirements-local.txt`（需手动在子目录执行） | `dependencies = ["cartridge"]` 直接写在 `pyproject.toml`，uv 自动在工作区内解析 |
 | 版本锁定 | 无（各子项目各自为政） | `uv.lock` 在根目录统一锁定所有包的版本 |
 | venv | 手动创建，策略靠文档约定 | `uv sync` 一步创建根 venv，所有子包 editable 安装在一起 |
 | 安装步骤 | 3 步（`pip install -r requirements-local.txt` → `pip install -e .` → `pip install -r requirements.txt`） | 1 步（`uv sync`） |
@@ -43,7 +43,7 @@ uv sync --all-packages            # 创建 .venv、安装全部子项目（edita
 ### 3.2 运行测试
 
 ```bash
-uv run python -m unittest discover -s format/PersonaSeed/tests -t format/PersonaSeed
+uv run python -m unittest discover -s format/Cartridge/tests -t format/Cartridge
 uv run python -m unittest discover -s asset-types/eidolon-character/tests -t asset-types/eidolon-character
 uv run python -m unittest discover -s runtime/eidolon-runtime/tests -t runtime/eidolon-runtime
 ```
@@ -133,7 +133,7 @@ uv 在仓库根目录统一创建 `.venv`，所有子包以 editable 方式安�
 | 概念 | 旧方案 | uv workspace |
 |------|--------|-------------|
 | 兄弟库安装方式 | `requirements-local.txt` + `pip install -e` | `dependencies = ["包名"]` → `uv sync` |
-| 导入方式 | 直接 `import personaseed`（通过 editable 安装） | 同，不变 |
+| 导入方式 | 直接 `import cartridge`（通过 editable 安装） | 同，不变 |
 | 不允许 | `sys.path.insert` 跨项目注入 | 同，更严格禁止 |
 | 版本锁定 | 无 | `uv.lock` |
 | 安装命令 | 3 步 | 1 步 |
