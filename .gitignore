@@ -1,5 +1,6 @@
 # Agent 项目记忆（私有数据，不纳入仓库）
 .workbuddy/
+.serena/
 
 # Python
 __pycache__/
