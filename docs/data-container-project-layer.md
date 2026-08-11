@@ -1,6 +1,6 @@
 # 数据容器与项目工程层
 
-> 本文档记录"数据容器"在叙事 / 模拟方向上的**最终定位决策**（已剔除过渡讨论）。它扩展而非推翻 [资源管理与跨项目集成](./resource-management.md) 中 PersonaSeed 作为底层哑容器的定位。
+> 本文档记录"数据容器"在叙事 / 模拟方向上的**最终定位决策**（已剔除过渡讨论）。它扩展而非推翻 [资源管理与跨项目集成](./resource-management.md) 中协议层作为底层哑容器的定位。
 > 相关文档：[核心架构哲学与项目定位](./design-philosophy.md) · [运行时核心设计](./runtime-core-design.md) · [剧情 / 世界 / 叙事引擎](./narrative-world-engine.md)
 
 ## 1. 数据容器的重新定位
@@ -40,13 +40,13 @@ Engine（核心）  ↑  Project（工程）  ↑  Assets（资源，含 PNG 角
 
 - **PNG 角色卡思路降级为非核心**：它只是"导入资源文件"（类似 Unity 的 Texture / Model / Script），不是引擎本身。
 - 真正核心是 Engine↑Project↑Assets，与 Unity Engine↑Unity Project↑Textures / Models / Scripts 同构。
-- 重申 [资源管理与跨项目集成](./resource-management.md) 的裁定：`.seed` 是标准格式，`.png` 是分发封装，不应将分发封装提升为核心。
+- 重申 [资源管理与跨项目集成](./resource-management.md) 的裁定：标准包是标准格式，分发镜像（封面图内嵌包数据）是分发封装，不应将分发封装提升为核心。
 
-## 5. 与 PersonaSeed 的关系
+## 5. 与协议层的关系
 
-- 本层是 PersonaSeed 之上的"**世界工程数据**"视角；PersonaSeed 仍是底层哑容器（协议无知）。
-- "世界工程文件格式"由**扩展层**（eidolon-character / eidolon-world / eidolon-mind …）各自定义，包格式沿用 PersonaSeed 的 `.seed` / `.png`。
-- 协议层不预知"世界 / 剧情"等概念（见 [Agent 设计规范](../agent-conventions/design-document-conventions.md) 规范 13/15）。
+- 本层是协议层之上的"**世界工程数据**"视角；协议层仍是底层哑容器（协议无知）。
+- "世界工程文件格式"由各扩展层（角色、世界、人格等）各自定义，包格式沿用协议层的标准容器。
+- 协议层不预知"世界 / 剧情"等概念。
 
 ## 6. 剧情 / 世界包即"插件"
 

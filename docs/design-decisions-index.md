@@ -22,8 +22,8 @@
 | Runtime 做成集中式"大脑"（领域逻辑全塞进内核） | 内核极小且领域无知，领域逻辑由 Processor/扩展提供 |
 | "Prompt Builder" 简单拼接 | "Context Compiler" + Context IR 编译过程 |
 | 复用 SillyTavern 作为内核 | 从零实现；SillyTavern 至多作外围兼容层 |
-| LLM 是状态机、Prompt 是输入 | LLM=概率推理/表达模块；状态由外部运行时维护 |
+| LLM 是状态机、Prompt 是输入 | LLM 是概率推理/表达模块；状态由外部运行时维护 |
 | 状态变化=从历史重新生成 | 状态=事件驱动的演化（状态转移函数） |
 | 把全部历史塞给 LLM | 数据库存全部历史，状态系统压缩后只给必要上下文 |
-| PNG 角色卡是核心 | PNG 是资源/分发封装（非核心）；Engine>Project>Assets |
+| PNG 角色卡是核心 | PNG 是资源/分发封装（非核心）；Engine > Project > Assets |
 | "Character Runtime" | 提升为 "Simulation Runtime"，角色只是世界一种实体 |

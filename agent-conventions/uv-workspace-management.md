@@ -4,7 +4,7 @@ Eidolon 引擎采用 **[uv workspace](https://docs.astral.sh/uv/concepts/project
 
 ## 1. 为什么用 uv workspace
 
-Eidolon 是按引擎层级模型组织多独立子项目的生态——`format/` / `asset-types/` / `runtime/` / `editor/` 四个层级，各子项目独立包名（`personaseed` / `eidolon-character` / `eidolon-runtime` / `eidolon-studio`），彼此有依赖关系。
+Eidolon 是按引擎层级模型组织多独立子项目的生态——`format/` / `asset-types/` / `runtime/` / `editor/` 四个层级，各子项目独立包名，彼此有依赖关系。
 
 uv workspace 天然匹配这个结构：
 
@@ -20,16 +20,16 @@ uv workspace 天然匹配这个结构：
 ```
 Eidolon/                           ← 根 pyproject.toml（workspace root）
 │
-├── format/PersonaSeed/            ← member：包 personaseed（零依赖）
-├── asset-types/eidolon-character/ ← member：包 eidolon-character（依赖 personaseed）
-├── runtime/eidolon-runtime/       ← member：包 eidolon-runtime（依赖 personaseed + eidolon-character）
-├── editor/eidolon-studio/         ← member：包 eidolon-studio（依赖 personaseed + eidolon-character）
+├── format/Cartridge/               ← member：协议层（零依赖）
+├── asset-types/eidolon-character/  ← member：角色资产（依赖协议层）
+├── runtime/eidolon-runtime/        ← member：引擎运行时（依赖协议层 + 角色资产）
+├── editor/eidolon-studio/          ← member：可视化编辑器（依赖协议层 + 角色资产）
 │
 ├── pyproject.toml                 ← [tool.uv.workspace] members 列表
 └── uv.lock                        ← 跨所有成员的统一锁定文件
 ```
 
-依赖方向：`personaseed ← eidolon-character ← {eidolon-runtime, eidolon-studio}`
+依赖方向：协议层 ← 资产类型层 ← {运行时, 编辑器}
 
 ## 3. 日常操作
 
@@ -78,7 +78,7 @@ uv sync --dev                     # 安装包含 dev-dependencies
 
 1. 在对应层级目录下创建新项目（如 `asset-types/eidolon-dialogue/`）
 2. 编写 `pyproject.toml`，声明 `name`、`dependencies`
-3. 如需依赖兄弟库，直接用包名声明（如 `dependencies = ["personaseed"]`），uv 自动在工作区内解析
+3. 如需依赖兄弟库，直接用包名声明，uv 自动在工作区内解析
 4. 在根 `pyproject.toml` 的 `[tool.uv.workspace].members` 中添加一行
 5. `uv sync --all-packages`
 
@@ -94,7 +94,7 @@ name = "eidolon-dialogue"
 version = "0.1.0"
 description = "Eidolon 对话/剧情资产类型"
 requires-python = ">=3.11"
-dependencies = ["personaseed"]                    # 兄弟库直接写包名即可
+dependencies = ["cartridge"]                       # 兄弟库直接写包名即可
 
 [tool.setuptools.packages.find]
 include = ["eidolon_dialogue*"]
@@ -109,7 +109,7 @@ version = "0.1.0"
 description = "Eidolon 人格系统：人格资产 + 训练 + 推理"
 requires-python = ">=3.11"
 dependencies = [
-    "personaseed",
+    "cartridge",
     "eidolon-character",
     "torch>=2.0",                                  # 重依赖只出现在应用层
 ]
