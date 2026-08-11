@@ -1,0 +1,17 @@
+[project]
+name = "eidolon"
+version = "0.1.0"
+description = "Eidolon — AI Character Engine (workspace root)"
+requires-python = ">=3.11"
+dependencies = []
+
+[tool.uv.workspace]
+members = [
+    "format/Cartridge",
+    "asset-types/eidolon-character",
+    "runtime/eidolon-runtime",
+    "editor/eidolon-studio",
+]
+
+[dependency-groups]
+dev = ["pytest>=8", "httpx"]

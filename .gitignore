@@ -1,9 +1,10 @@
-# PersonaSeed 作为独立 Git 仓库管理（见 docs/git-repository-management.md）。
-# 本地开发阶段与之解耦；待远程仓库就绪后，用 submodule 正式关联：
-#   git submodule add <persona-seed-remote-url> PersonaSeed
-PersonaSeed/
-eidolon-character/
-eidolon-studio/
+# 子项目均为独立 Git 仓库（见 docs/git-repository-management.md）。
+# 按引擎层级模型分组（见 docs/project-responsibilities.md §2）。
+# 本地开发阶段解耦；待远程仓库就绪后，用 submodule 正式关联。
+format/Cartridge/
+asset-types/eidolon-character/
+runtime/eidolon-runtime/
+editor/eidolon-studio/
 
 # Agent 项目记忆（私有数据，不纳入仓库）
 .workbuddy/
