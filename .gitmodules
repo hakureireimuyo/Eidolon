@@ -1,0 +1,12 @@
+[submodule "format/Cartridge"]
+	path = format/Cartridge
+	url = git@github.com:hakureireimuyo/cartridge.git
+[submodule "asset-types/eidolon-character"]
+	path = asset-types/eidolon-character
+	url = git@github.com:hakureireimuyo/eidolon-character.git
+[submodule "runtime/eidolon-runtime"]
+	path = runtime/eidolon-runtime
+	url = git@github.com:hakureireimuyo/eidolon-runtime.git
+[submodule "editor/eidolon-studio"]
+	path = editor/eidolon-studio
+	url = git@github.com:hakureireimuyo/eidolon-studio.git
