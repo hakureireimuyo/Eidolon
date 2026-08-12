@@ -7,6 +7,7 @@ members = [
     "cartridge",
     "eidolon",
     "eidolon-character",
+    "eidolon-character-service",
     "eidolon-runtime",
     "eidolon-studio",
 ]
@@ -109,20 +110,38 @@ dev = [
 name = "eidolon-character"
 version = "1.0.0"
 source = { editable = "asset-types/eidolon-character" }
-dependencies = [
+
+[package.optional-dependencies]
+dev = [
     { name = "cartridge" },
 ]
 
 [package.metadata]
-requires-dist = [{ name = "cartridge", editable = "format/Cartridge" }]
+requires-dist = [{ name = "cartridge", marker = "extra == 'dev'", editable = "format/Cartridge" }]
+provides-extras = ["dev"]
+
+[[package]]
+name = "eidolon-character-service"
+version = "0.1.0"
+source = { editable = "runtime/eidolon-character-service" }
+dependencies = [
+    { name = "cartridge" },
+    { name = "eidolon-character" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "cartridge", editable = "format/Cartridge" },
+    { name = "eidolon-character", editable = "asset-types/eidolon-character" },
+]
 
 [[package]]
 name = "eidolon-runtime"
 version = "0.1.0"
-source = { editable = "runtime/eidolon-runtime" }
+source = { virtual = "runtime/eidolon-runtime" }
 dependencies = [
-    { name = "cartridge" },
     { name = "eidolon-character" },
+    { name = "eidolon-character-service" },
     { name = "fastapi" },
     { name = "openai" },
     { name = "pillow" },
@@ -132,16 +151,14 @@ dependencies = [
 
 [package.optional-dependencies]
 dev = [
-    { name = "httpx" },
     { name = "pytest" },
 ]
 
 [package.metadata]
 requires-dist = [
-    { name = "cartridge", editable = "format/Cartridge" },
     { name = "eidolon-character", editable = "asset-types/eidolon-character" },
+    { name = "eidolon-character-service", editable = "runtime/eidolon-character-service" },
     { name = "fastapi", specifier = ">=0.110" },
-    { name = "httpx", marker = "extra == 'dev'" },
     { name = "openai", specifier = ">=1.30" },
     { name = "pillow", specifier = ">=10.0" },
     { name = "pytest", marker = "extra == 'dev'" },
@@ -153,10 +170,8 @@ provides-extras = ["dev"]
 [[package]]
 name = "eidolon-studio"
 version = "0.1.0"
-source = { editable = "editor/eidolon-studio" }
+source = { virtual = "editor/eidolon-studio" }
 dependencies = [
-    { name = "cartridge" },
-    { name = "eidolon-character" },
     { name = "fastapi" },
     { name = "python-multipart" },
     { name = "uvicorn", extra = ["standard"] },
@@ -169,8 +184,6 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "cartridge", editable = "format/Cartridge" },
-    { name = "eidolon-character", editable = "asset-types/eidolon-character" },
     { name = "fastapi", specifier = ">=0.110" },
     { name = "pytest", marker = "extra == 'dev'" },
     { name = "python-multipart", specifier = ">=0.0.9" },

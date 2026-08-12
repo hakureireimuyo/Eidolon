@@ -9,6 +9,7 @@ dependencies = []
 members = [
     "format/Cartridge",
     "asset-types/eidolon-character",
+    "runtime/eidolon-character-service",
     "runtime/eidolon-runtime",
     "editor/eidolon-studio",
 ]
