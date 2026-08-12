@@ -140,7 +140,6 @@ name = "eidolon-runtime"
 version = "0.1.0"
 source = { virtual = "runtime/eidolon-runtime" }
 dependencies = [
-    { name = "eidolon-character" },
     { name = "eidolon-character-service" },
     { name = "fastapi" },
     { name = "openai" },
@@ -151,12 +150,13 @@ dependencies = [
 
 [package.optional-dependencies]
 dev = [
+    { name = "eidolon-character" },
     { name = "pytest" },
 ]
 
 [package.metadata]
 requires-dist = [
-    { name = "eidolon-character", editable = "asset-types/eidolon-character" },
+    { name = "eidolon-character", marker = "extra == 'dev'", editable = "asset-types/eidolon-character" },
     { name = "eidolon-character-service", editable = "runtime/eidolon-character-service" },
     { name = "fastapi", specifier = ">=0.110" },
     { name = "openai", specifier = ">=1.30" },

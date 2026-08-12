@@ -10,6 +10,7 @@
 | [数据容器与项目工程层](./data-container-project-layer.md) | 数据层 | 数据容器=世界工程数据层；源数据模型无关；Engine>Project>Assets |
 | [剧情 / 世界 / 叙事引擎](./narrative-world-engine.md) | 世界/叙事 | 剧情=动态世界；事件/规则驱动；多路线规则生成；剧情包即插件 |
 | [叙事游戏引擎架构与 AI 职责分离](./narrative-game-engine.md) | 引擎架构 | ECS世界模型；三大编辑器；Action Intent→World Event循环；AI职责分离；双维度上下文管理 |
+| [项目职责与能力边界](./project-responsibilities.md) | 分层职责 | 四层职责边界；稳定进核心,不稳定成扩展；运行时解释器(X-service)与格式层(X)成对 |
 
 ## 被推翻的观点 → 最终决定(本次整理已剔除推翻部分)
 
@@ -24,6 +25,7 @@
 | PNG 角色卡是核心 | PNG 是资源/分发封装(非核心)；Engine > Project > Assets |
 | "Character Runtime" | 提升为 "Simulation Runtime",角色只是世界一种实体 |
 | eidolon-runtime 是唯一的运行时内核,容纳所有领域能力 | 运行时层 = 组合入口(eidolon-runtime)+ 多个能力子项目独立发版 |
+| eidolon-character-service 是"服务层/消费层"(定位模糊,未获架构文档承认) | eidolon-character-service 是资产类型 X 的"运行时解释器":与格式层 X 成对、按需存在;组合入口只消费解释器,不直接 import 格式层 |
 | "对话AI/动作AI/环境AI"各为独立AI | 表现层职责可由同一角色AI通过结构化输出完成；真正需分离的是角色认知vs世界运行 |
 | 提示词按更新频率分层(单一维度) | 增加数据所有权维度:双维度模型(生命周期+所有权) |
 | 上下文=压缩后的文本 | 上下文=Runtime根据Agent身份投影的数据视图 |
