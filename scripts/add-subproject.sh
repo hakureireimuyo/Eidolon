@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 # ============================================================
-# add-subproject.sh — 一键接入新子项目（独立仓库 + Submodule）
+# add-subproject.sh — 一键接入新子项目(独立仓库 + Submodule)
 #
-# 解决痛点：新子项目接入 GitHub 的繁琐手工流程
-#   （建仓库 → init → remote → push → submodule → workspace → 提交推送）
+# 解决痛点:新子项目接入 GitHub 的繁琐手工流程
+#   (建仓库 → init → remote → push → submodule → workspace → 提交推送)
 #
 # 用法:
 #   scripts/add-subproject.sh <子项目相对路径> [GitHub 仓库名]
@@ -13,10 +13,10 @@
 #   scripts/add-subproject.sh runtime/eidolon-mind   # 仓库名默认取目录名
 #
 # 前置条件:
-#   - 在 GitHub 上预先创建同名空仓库（脚本检测不到时会打印创建链接）
-#   - SSH key 已配置（与其余 submodule 的 git@ URL 一致）
+#   - 在 GitHub 上预先创建同名空仓库(脚本检测不到时会打印创建链接)
+#   - SSH key 已配置(与其余 submodule 的 git@ URL 一致)
 #
-# 幂等性: 可重复执行；已接入的步骤自动跳过，不会重复提交。
+# 幂等性: 可重复执行；已接入的步骤自动跳过,不会重复提交。
 # ============================================================
 set -euo pipefail
 
@@ -28,7 +28,7 @@ REPO_NAME="${2:-$(basename "$REL_PATH")}"
 SUB_DIR="$TOP/$REL_PATH"
 [ -d "$SUB_DIR" ] || { echo "✗ 路径不存在: $REL_PATH"; exit 1; }
 if git config -f "$TOP/.gitmodules" --get "submodule.$REL_PATH.path" >/dev/null 2>&1; then
-  echo "✗ $REL_PATH 已在 .gitmodules 中注册，无需重复接入"; exit 1
+  echo "✗ $REL_PATH 已在 .gitmodules 中注册,无需重复接入"; exit 1
 fi
 
 OWNER=$(git config --get remote.origin.url | sed -E 's#.*github\.com[:/]([^/]+)/.*#\1#')
@@ -38,7 +38,7 @@ echo "==> 目标远程: $REMOTE_URL"
 # ---------- 1. 检查远程仓库是否存在 ----------
 if ! git ls-remote "$REMOTE_URL" HEAD >/dev/null 2>&1; then
   echo ""
-  echo "✗ 远程仓库不存在或不可访问。请在浏览器创建空仓库（不要勾选 README/.gitignore/LICENSE）："
+  echo "✗ 远程仓库不存在或不可访问。请在浏览器创建空仓库(不要勾选 README/.gitignore/LICENSE):"
   echo "    https://github.com/new?name=$REPO_NAME&owner=$OWNER"
   echo "  创建完成后重新执行本脚本即可。"
   exit 1
@@ -51,7 +51,7 @@ if [ ! -d "$SUB_DIR/.git" ]; then
   git -C "$SUB_DIR" init -b master
 fi
 if [ ! -f "$SUB_DIR/.gitignore" ]; then
-  echo "⚠  $REL_PATH 没有 .gitignore，已生成默认 Python 模板（可按需修改）"
+  echo "⚠  $REL_PATH 没有 .gitignore,已生成默认 Python 模板(可按需修改)"
   cat > "$SUB_DIR/.gitignore" <<'IGN'
 # Python
 __pycache__/
@@ -65,8 +65,8 @@ dist/
 IGN
 fi
 if [ -z "$(git -C "$SUB_DIR" status --porcelain)" ] && [ "$(git -C "$SUB_DIR" rev-list --count HEAD 2>/dev/null || echo 0)" -eq 0 ]; then
-  # 空仓库（无提交且无内容）也允许，但无内容无法 push 首个分支
-  echo "⚠  $REL_PATH 为空目录，无内容可提交"
+  # 空仓库(无提交且无内容)也允许,但无内容无法 push 首个分支
+  echo "⚠  $REL_PATH 为空目录,无内容可提交"
 fi
 if [ "$(git -C "$SUB_DIR" rev-list --count HEAD 2>/dev/null || echo 0)" -eq 0 ]; then
   git -C "$SUB_DIR" add .
@@ -89,12 +89,12 @@ git add .gitmodules "$REL_PATH" 2>/dev/null || true
 git submodule init "$REL_PATH" >/dev/null 2>&1 || true
 git submodule absorbgitdirs "$REL_PATH" >/dev/null 2>&1 || true
 git submodule update "$REL_PATH" >/dev/null 2>&1 || true
-echo "==> submodule 已注册并收编（gitlink 格式）"
+echo "==> submodule 已注册并收编(gitlink 格式)"
 git submodule status | grep "$REL_PATH"
 
 # ---------- 5. uv workspace members ----------
 if [ -f "$TOP/pyproject.toml" ]; then
-  python - "$REL_PATH" <<'PY' || echo "⚠  未能自动更新 workspace members，请手动在 pyproject.toml 添加"
+  python - "$REL_PATH" <<'PY' || echo "⚠  未能自动更新 workspace members,请手动在 pyproject.toml 添加"
 import pathlib, sys
 path = sys.argv[1]
 p = pathlib.Path("pyproject.toml")
