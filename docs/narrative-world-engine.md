@@ -1,7 +1,8 @@
 # 剧情 / 世界 / 叙事引擎
 
-> 本文档记录"叙事 / 世界模拟"方向的**最终决策**（已剔除过渡讨论）。它描述 eidolon-world（未来层）与叙事能力的设计理念，建立在 [数据容器与项目工程层](./data-container-project-layer.md) 与 [运行时核心设计](./runtime-core-design.md) 之上。
-> 相关文档：[状态模型、上下文管理与缓存](./state-and-context.md) · [多智能体与多模态系统](./multi-agent-multimodal.md)
+> 本文档记录"叙事 / 世界模拟"方向的**最终决策**（已剔除过渡讨论）。它描述 eidolon-world（未来层）与叙事能力的设计理念，建立在 [数据容器与项目工程层](./data-container-project-layer.md) 与运行时核心设计之上。
+> 引擎架构与可实现的编辑器 / 事件图 / AI 职责分离等设计见 [叙事游戏引擎架构与 AI 职责分离](./narrative-game-engine.md)。
+> 相关文档：状态模型、上下文管理与缓存 · 多智能体与多模态系统
 
 ## 1. 叙事运行时的形态
 

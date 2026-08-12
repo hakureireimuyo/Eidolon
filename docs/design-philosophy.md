@@ -1,7 +1,7 @@
 # 核心架构哲学与项目定位
 
 > 本文档记录 Eidolon 设计对话中**最终确定**的全局架构理念（已剔除被推翻的方案与过渡讨论）。这些理念约束后续 eidolon-runtime / eidolon-mind / eidolon-world 等未来层的方向。
-> 相关文档：[数据容器与项目工程层](./data-container-project-layer.md) · [运行时核心设计](./runtime-core-design.md) · [独立项目职责与能力边界](./project-responsibilities.md)
+> 相关文档：[数据容器与项目工程层](./data-container-project-layer.md) · 运行时核心设计 · [独立项目职责与能力边界](./project-responsibilities.md)
 
 ## 1. 项目本质的重定义
 
@@ -18,7 +18,7 @@ Eidolon 不再只是"AI 角色聊天系统"，而是一个**可演化的叙事 /
 | 运行时 | 未知的能力如何参与运行 | 内核领域无知，未知扩展可参与状态演化 |
 | Agent / 扩展 | 解释数据、推动状态演化 | 各 Agent 是状态转换器 |
 
-三者应具有相似的"允许未知生长"的哲学：数据容器不拒绝不理解的模块；运行时也不应拒绝尚未实现的扩展（见 [运行时核心设计](./runtime-core-design.md)）。
+三者应具有相似的"允许未知生长"的哲学：数据容器不拒绝不理解的模块；运行时也不应拒绝尚未实现的扩展（见 运行时核心设计）。
 
 ## 3. 状态 / 能力 / 模型 完全解耦
 

@@ -1,7 +1,6 @@
 # 设计决策总览索引（运行时 / 世界 / 多智能体方向）
 
-> 本目录汇集 2026-08-10 设计对话中**最终确定下来的观点与理念**（已删除被推翻的方案与过渡讨论），按知识域分类，供后续 eidolon-runtime / eidolon-mind / eidolon-world 等未来层参考。
-> 前置约定：[独立项目职责与能力边界](./project-responsibilities.md) · [资源管理与跨项目集成](./resource-management.md) · [Agent 设计规范](../agent-conventions/design-document-conventions.md)
+> 本索引包含根目录 `docs/` 下的文档；运行时相关设计文档位于 `runtime/eidolon-runtime/docs/`：运行时核心设计、状态模型/上下文管理、多智能体与多模态、模型选型与验证。
 
 ## 文档导航
 
@@ -9,11 +8,8 @@
 |------|--------|--------|
 | [核心架构哲学与项目定位](./design-philosophy.md) | 全局哲学 | Eidolon 是叙事/模拟运行时，LLM 是表现层不是大脑，从零实现 |
 | [数据容器与项目工程层](./data-container-project-layer.md) | 数据层 | 数据容器=世界工程数据层；源数据模型无关；Engine>Project>Assets |
-| [运行时核心设计](./runtime-core-design.md) | 运行时 | 内核极小且领域无知；事件驱动+Processor；共享状态非共享 Prompt |
-| [状态模型、上下文管理与缓存](./state-and-context.md) | 状态/上下文 | 状态与上下文分离；状态演化；频率分层；Context Compiler；事件溯源 |
 | [剧情 / 世界 / 叙事引擎](./narrative-world-engine.md) | 世界/叙事 | 剧情=动态世界；事件/规则驱动；多路线规则生成；剧情包即插件 |
-| [多智能体与多模态系统](./multi-agent-multimodal.md) | 多智能体 | 多 Agent 围绕共享状态；生成模型由状态触发；生成物是状态投影 |
-| [模型选型与本地验证](./model-selection-validation.md) | 模型/验证 | LLM 可替换；小模型验证架构；本地硬件指导 |
+| [叙事游戏引擎架构与 AI 职责分离](./narrative-game-engine.md) | 引擎架构 | ECS世界模型；三大编辑器；Action Intent→World Event循环；AI职责分离；双维度上下文管理 |
 
 ## 被推翻的观点 → 最终决定（本次整理已剔除推翻部分）
 
@@ -27,3 +23,9 @@
 | 把全部历史塞给 LLM | 数据库存全部历史，状态系统压缩后只给必要上下文 |
 | PNG 角色卡是核心 | PNG 是资源/分发封装（非核心）；Engine > Project > Assets |
 | "Character Runtime" | 提升为 "Simulation Runtime"，角色只是世界一种实体 |
+| eidolon-runtime 是唯一的运行时内核，容纳所有领域能力 | 运行时层 = 组合入口（eidolon-runtime）+ 多个能力子项目独立发版 |
+| "对话AI/动作AI/环境AI"各为独立AI | 表现层职责可由同一角色AI通过结构化输出完成；真正需分离的是角色认知vs世界运行 |
+| 提示词按更新频率分层（单一维度） | 增加数据所有权维度：双维度模型（生命周期+所有权） |
+| 上下文=压缩后的文本 | 上下文=Runtime根据Agent身份投影的数据视图 |
+| AI负责创造剧情 | 程序负责真实性（决定发生什么），AI负责表现力（如何表达） |
+| 剧情是固定分支树 | 剧情是事件图（Event Graph），条件触发，非阻塞 |

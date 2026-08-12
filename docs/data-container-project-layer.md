@@ -1,7 +1,7 @@
 # 数据容器与项目工程层
 
 > 本文档记录"数据容器"在叙事 / 模拟方向上的**最终定位决策**（已剔除过渡讨论）。它扩展而非推翻 [资源管理与跨项目集成](./resource-management.md) 中协议层作为底层哑容器的定位。
-> 相关文档：[核心架构哲学与项目定位](./design-philosophy.md) · [运行时核心设计](./runtime-core-design.md) · [剧情 / 世界 / 叙事引擎](./narrative-world-engine.md)
+> 相关文档：[核心架构哲学与项目定位](./design-philosophy.md) · 运行时核心设计 · [剧情 / 世界 / 叙事引擎](./narrative-world-engine.md)
 
 ## 1. 数据容器的重新定位
 
