@@ -2,27 +2,9 @@
 
 > 相关文档:[`project-responsibilities.md`](./project-responsibilities.md) —— 各独立项目的职责与能力边界。
 
-## 1. 架构:5 个独立仓库 + Git Submodule
+## 1. 架构:6 个独立仓库 + Git Submodule
 
-Eidolon 生态采用**多独立 Git 仓库**架构,通过 Git Submodule 在顶层仓库中组织。
-
-```
-Eidolon/                              ← 顶层仓库(聚合与文档)
-│
-├── format/                           ← 层目录(普通目录,非仓库)
-│   └── Cartridge/                    ← 独立仓库:cartridge
-├── asset-types/                      ← 层目录(普通目录,非仓库)
-│   └── eidolon-character/            ← 独立仓库:eidolon-character
-├── runtime/                          ← 层目录(普通目录,非仓库)
-│   └── eidolon-runtime/              ← 独立仓库:eidolon-runtime
-├── editor/                           ← 层目录(普通目录,非仓库)
-│   └── eidolon-studio/               ← 独立仓库:eidolon-studio
-│
-├── docs/                             ← 顶层共享文档
-├── agent-conventions/                ← Agent 开发约定
-├── pyproject.toml                    ← uv workspace 根配置
-└── .gitmodules
-```
+Eidolon 生态采用**多独立 Git 仓库**架构,通过 Git Submodule 在顶层仓库中组织。完整仓库清单与远程地址见 [§2](#2-仓库清单与远程地址),不在此重复维护。
 
 **关键约束**:
 - 层目录(`format/` `asset-types/` `runtime/` `editor/`)是根仓库内的普通目录,**不是 Git 仓库**。如果层目录自己也是仓库,其中的子项目版本将被强行绑定、无法独立演化。
@@ -35,10 +17,11 @@ Eidolon/                              ← 顶层仓库(聚合与文档)
 | Eidolon(顶层) | `Eidolon/` | `git@github.com:hakureireimuyo/Eidolon.git` |
 | Cartridge | `format/Cartridge/` | `git@github.com:hakureireimuyo/cartridge.git` |
 | eidolon-character | `asset-types/eidolon-character/` | `git@github.com:hakureireimuyo/eidolon-character.git` |
+| eidolon-character-service | `runtime/eidolon-character-service/` | `git@github.com:hakureireimuyo/eidolon-character-service.git` |
 | eidolon-runtime | `runtime/eidolon-runtime/` | `git@github.com:hakureireimuyo/eidolon-runtime.git` |
 | eidolon-studio | `editor/eidolon-studio/` | `git@github.com:hakureireimuyo/eidolon-studio.git` |
 
-5 个仓库均已推送到 GitHub,全部位于 `hakureireimuyo` 账号下。所有仓库的默认分支为 `master`。
+6 个仓库均已推送到 GitHub,全部位于 `hakureireimuyo` 账号下。所有仓库的默认分支为 `master`。
 
 ## 3. Submodule 的工作原理
 
@@ -133,9 +116,11 @@ git branch -vv
 # 应显示 [origin/master] 而非 [origin/master: gone]
 ```
 
+出现 `[gone]` 时按 [§6.1](#61-originmaster-gone-误报) 处理;注意验证时 `git status -sb` 显示 `## master...origin/master` 即正常。
+
 ## 5. 版本固定与兼容
 
-顶层仓库固定子模块的 commit,保证环境可复现:
+顶层仓库固定子模块的 commit,保证环境可复现(下例为**历史快照,仅说明机制,与项目当前实际状态无关**;现状见 §2 清单与 `git submodule status`):
 
 ```
 顶层 commit fc7db4c 记录:
@@ -159,19 +144,43 @@ git branch -vv
 
 **现象**:`git branch -vv` 显示 `[origin/master: gone]`,但 GitHub 远程仓库实际存在且可达。
 
-**根因**:`.git/refs/remotes/origin/` 目录不存在,导致 fetch 无法持久化 remote tracking ref。
+**根因**:remote tracking ref(`refs/remotes/origin/master`)未落盘或损坏。可能触发因素:
 
-**解决**(在每个有此问题的仓库中执行):
+1. `.git/refs/remotes/origin/` 目录不存在 —— PortableGit(WorkBuddy 内置版本)在 Windows 上不会自动创建该目录,fetch 写入失败
+2. 子模块是 gitdir 文件类型(见 §6.3),refs 实际存放在顶层 `.git/modules/<name>/` 下,直接操作子项目内的 `.git` 路径无效
+3. 沙箱环境虚拟化 `.git` 写入 —— 命令内"声称成功"、命令结束后写入消失
+4. 缩写 SHA(7 位)被手写进 ref 文件,git 视为 broken ref 并忽略
+
+**解决**(在每个有此问题的仓库中执行;**必须非沙箱**,且在同一命令内验证):
 
 ```bash
-mkdir -p .git/refs/remotes/origin
-git fetch origin
-# 验证
-git branch -r        # 应看到 origin/master
-git branch -vv       # 应显示 [origin/master] 而非 [gone]
+GD=$(git rev-parse --absolute-git-dir)   # gitdir 文件型子模块会解析到顶层 .git/modules/<name>
+mkdir -p "$GD/refs/remotes/origin"
+
+# 清理调试残留:stale lock / 内容非法的 broken ref
+rm -f "$GD/refs/remotes/origin/"*.lock
+
+# 用完整 40 位 SHA 重建(缩写 SHA 会被 git 当作 broken ref 忽略)
+git update-ref refs/remotes/origin/master "$(git rev-parse master)"
+
+# 同一命令内验证落盘
+git rev-parse refs/remotes/origin/master
+git status -sb                           # 应显示 ## master...origin/master
 ```
 
-此问题可能由 PortableGit(WorkBuddy 内置版本)在 Windows 上的路径处理行为触发。重新克隆后也建议验证该目录是否存在。
+若 `packed-refs` 中残留推送前的旧 SHA,执行 `git pack-refs --all` 重打包(loose ref 优先,旧条目无害但会误导排查)。
+
+**验证注意事项**:git 2.54 起 `git show-ref` 不再做前缀匹配 —— `git show-ref refs/remotes` 返回空(exit 1)**不是 ref 丢失**,模式需写完整 ref 名或从 ref 名末尾匹配完整组件。可靠的验证方式:
+
+```bash
+git show-ref                            # 无参数,列出全部 ref
+git rev-parse refs/remotes/origin/master
+git status -sb                          # ## master...origin/master 即正常
+```
+
+**经验规则**:所有写 `.git` 的命令(fetch / update-ref / pack-refs)必须在非沙箱环境执行;沙箱会虚拟化 `.git` 写入,命令内成功、跨命令消失。判断是否真实落盘的唯一可靠方式,是在同一条非沙箱命令内写入后立即读取验证。
+
+此问题可能由 PortableGit(WorkBuddy 内置版本)在 Windows 上的路径处理行为触发。重新克隆后也建议验证 `refs/remotes/origin/` 目录是否存在。
 
 ### 6.2 Submodule 指针指向不存在的 commit
 
@@ -193,7 +202,14 @@ git commit -m "chore: fix Cartridge submodule pointer"
 
 ### 6.3 子项目 .git 目录类型
 
-子项目的 `.git` 应是**目录**而非文件(本项目各子仓库均为目录,非 submodule 的标准 gitlink 文件格式)。这是因为各仓库最初是独立 init 的,后通过 `git submodule add` 关联。只要 `git submodule status` 正常工作即可,不需要迁移为标准 gitlink 格式。
+**所有子项目都是独立仓库**(各自拥有 remote、commit 历史、发布周期),区别仅在于 `.git` 自身的存放形态(现状):
+
+- **gitdir 文件**(标准 gitlink):`eidolon-character`、`eidolon-character-service`、`eidolon-runtime`、`eidolon-studio` —— 内容为 `gitdir: ../../.git/modules/<name>`,真实 gitdir 在顶层仓库的 `.git/modules/` 下
+- **实体目录 .git**:`Cartridge` —— 与顶层仓库相同的形态,`.git` 是实体目录;最初独立 init 后通过 `git submodule add` 关联,未被 absorb(remote 见 §2 清单)
+
+各仓库最初是独立 init 的,后通过 `git submodule add` 关联,部分子模块此后被 git 自动吸收为标准 gitlink 格式(absorbgitdirs)。两种形态均为合法仓库,只要 `git submodule status` 正常工作即可,不需要统一格式。
+
+对 gitdir 文件型子模块做 §6.1 类修复时,必须先用 `git rev-parse --absolute-git-dir` 解析真实 gitdir;直接操作子项目内的 `.git` 路径(如 `mkdir .git/refs/...`)无效。
 
 ## 7. 子项目 Git 配置注意事项
 
