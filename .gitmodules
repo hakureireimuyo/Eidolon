@@ -10,3 +10,6 @@
 [submodule "editor/eidolon-studio"]
 	path = editor/eidolon-studio
 	url = git@github.com:hakureireimuyo/eidolon-studio.git
+[submodule "runtime/eidolon-character-service"]
+	path = runtime/eidolon-character-service
+	url = git@github.com:hakureireimuyo/eidolon-character-service.git
