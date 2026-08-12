@@ -1,6 +1,6 @@
 # Git 仓库管理
 
-> 相关文档:[`project-responsibilities.md`](./project-responsibilities.md) —— 各独立项目的职责与能力边界。
+> 相关文档:[`project-responsibilities.md`](./project-responsibilities.md) —— 各独立项目的职责与能力边界;[`multi-machine-development.md`](./multi-machine-development.md) —— 在新电脑上克隆、继续开发与推送的流程。
 
 ## 1. 架构:6 个独立仓库 + Git Submodule
 
