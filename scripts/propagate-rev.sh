@@ -135,7 +135,11 @@ for entry in "${REPOS[@]}"; do
         continue
       fi
       if [ "$old_rev" != "$new_rev" ]; then
-        sed -i -E "s#(hakureireimuyo/${prov}\\.git\", rev = \")[0-9a-f]{40}(\")#\\1${new_rev}\\2#" "$TOP/$path/pyproject.toml"
+        if [ "$DRY_RUN" = 1 ]; then
+          echo "    [dry-run] sed 更新 $prov pin: ${old_rev:0:7} → ${new_rev:0:7}"
+        else
+          sed -i -E "s#(hakureireimuyo/${prov}\\.git\", rev = \")[0-9a-f]{40}(\")#\\1${new_rev}\\2#" "$TOP/$path/pyproject.toml"
+        fi
         updates="${updates}${prov}→${new_rev:0:7} "
         changed=1
       fi
