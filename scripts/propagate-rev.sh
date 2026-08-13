@@ -33,6 +33,8 @@ set -euo pipefail
 # 主仓根:以脚本自身位置推导(子模块内 git rev-parse 会解析到子仓,不可用)
 TOP="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 [ -f "$TOP/.gitmodules" ] || { echo "✗ 脚本必须位于 Eidolon 主仓的 scripts/ 目录"; exit 1; }
+# 固定工作目录为主仓根(主仓段的 git add/commit/push 依赖 cwd)
+cd "$TOP"
 
 DRY_RUN=0
 DO_SYNC=1
