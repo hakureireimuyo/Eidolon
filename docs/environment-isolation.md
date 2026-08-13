@@ -3,11 +3,12 @@
 > 本文档规定 Eidolon 生态下**虚拟环境(venv)该存在于何处**——尤其是未来子项目不断增多时的统一策略。
 > 相关文档:[项目职责与能力边界](./project-responsibilities.md) · [资源管理与跨项目集成](./resource-management.md) · [Git 仓库管理](./git-repository-management.md)
 
-> **落地方式已更新**:本文的**分层原则依然有效**(库项目零/轻依赖、重依赖只出现在应用层),
-> 但"应用层各自持有 venv"这一**执行方式**已被 uv workspace 取代——
-> 仓库根目录统一一个 `.venv`,所有子项目 editable 安装其中,版本由 `uv.lock` 锁定。
-> 具体操作见 [`agent-conventions/uv-workspace-management.md`](../agent-conventions/uv-workspace-management.md)。
-> 子项目目录下**不应再出现 `.venv` 或 `requirements*.txt`**。
+> **落地方式(2026-08 更新)**:本文的**分层原则依然有效**(库项目零/轻依赖、重依赖只出现在应用层)。
+> 执行方式为**各仓库独立环境**:每个仓库都是独立 uv 项目,应用 / 服务仓持有自己的
+> `.venv` 与 `uv.lock`;兄弟库以 **git 源(pin rev)** 作为第三方依赖被安装,
+> 不存在顶层 uv workspace 与共享 `.venv`(monorepo 检出与单独 clone 行为一致)。
+> 具体操作见 [`agent-conventions/uv-dependency-management.md`](../agent-conventions/uv-dependency-management.md)。
+> 库项目目录下**不应出现 `.venv` 或 `requirements*.txt`**;应用 / 服务仓的 `.venv` 已 gitignore。
 
 ## 1. 核心原则
 
@@ -58,12 +59,12 @@
 
 ## 5. 现在 vs 未来
 
-- **现在**:协议层与资产类型层均为零或极轻依赖,不需要独立环境。开发期通过统一依赖管理器在仓库根目录维护单一环境,所有子项目以 editable 方式安装。
-- **未来子项目变多**:套用上面的边界规则。重依赖集中在应用层；若想要隔离又不想重复安装,可在应用层用 `uv` / `pip-tools` 做跨仓库的**统一版本锁定(constraints)**,而不是给每个库各开 venv。
+- **现在**:协议层与资产类型层均为零或极轻依赖,不需要独立环境。每个仓库是独立 uv 项目,应用 / 服务仓各自 `uv sync` 维护自己的 `.venv` 与 `uv.lock`;兄弟库经 git 源(pin rev)安装。
+- **未来子项目变多**:套用上面的边界规则。重依赖集中在应用层;跨仓库版本一致性由 git 源 pin rev + 各仓 `uv.lock` 保障,而不是给每个库各开 venv。
 
 ## 6. 冻结约定
 
 > 1. 库项目(协议层 / 资产类型层)保持零或极小依赖集。
 > 2. 重依赖只出现在应用 / 服务类项目。
-> 3. 环境只存在于消费边界,由统一依赖管理器维护。
-> 4. 跨仓库版本一致性,由统一锁文件保障,而非各库自带环境。
+> 3. 环境只存在于消费边界(应用 / 服务仓),由各仓 uv 独立维护。
+> 4. 跨仓库版本一致性,由 git 源 pin rev + 各仓 uv.lock 保障,而非各库自带环境。

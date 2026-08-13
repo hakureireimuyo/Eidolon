@@ -3,7 +3,7 @@
 # add-subproject.sh — 一键接入新子项目(独立仓库 + Submodule)
 #
 # 解决痛点:新子项目接入 GitHub 的繁琐手工流程
-#   (建仓库 → init → remote → push → submodule → workspace → 提交推送)
+#   (建仓库 → init → remote → push → submodule → 提交推送)
 #
 # 用法:
 #   scripts/add-subproject.sh <子项目相对路径> [GitHub 仓库名]
@@ -92,24 +92,7 @@ git submodule update "$REL_PATH" >/dev/null 2>&1 || true
 echo "==> submodule 已注册并收编(gitlink 格式)"
 git submodule status | grep "$REL_PATH"
 
-# ---------- 5. uv workspace members ----------
-if [ -f "$TOP/pyproject.toml" ]; then
-  python - "$REL_PATH" <<'PY' || echo "⚠  未能自动更新 workspace members,请手动在 pyproject.toml 添加"
-import pathlib, sys
-path = sys.argv[1]
-p = pathlib.Path("pyproject.toml")
-s = p.read_text(encoding="utf-8")
-if f'"{path}"' in s:
-    sys.exit(0)
-marker = '"editor/eidolon-studio",'
-if marker in s:
-    s = s.replace(marker, marker + f'\n    "{path}",')
-    p.write_text(s, encoding="utf-8")
-    print("==> 已添加 workspace member:", path)
-PY
-fi
-
-# ---------- 6. 顶层提交 + 推送 ----------
+# ---------- 5. 顶层提交 + 推送 ----------
 if ! git diff --cached --quiet; then
   git commit -m "feat: add $REPO_NAME as submodule"
 fi

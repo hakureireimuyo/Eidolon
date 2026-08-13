@@ -2,7 +2,7 @@
 
 > 相关文档:[`git-repository-management.md`](./git-repository-management.md) —— 仓库架构、日常操作与已知问题。
 
-在另一台电脑上拉取 Eidolon 生态并继续开发、推送的完整流程。前提:目标机器已安装 Git 与 uv(uv workspace 依赖管理)。
+在另一台电脑上拉取 Eidolon 生态并继续开发、推送的完整流程。前提:目标机器已安装 Git 与 uv(依赖管理)。
 
 ## 1. 一次性准备
 
@@ -40,12 +40,19 @@ git submodule update --init --recursive
 
 ## 3. 安装依赖
 
-顶层是 uv workspace:
+各仓库是**独立 uv 项目**(自持 `.venv` 与 `uv.lock`),按需在对应仓库内安装:
 
 ```bash
-cd Eidolon
-uv sync
+cd runtime/eidolon-runtime && uv sync     # 运行时(或 studio / character-service / 各库仓)
 ```
+
+> 顶层仓库**不是** uv workspace,没有统一 `uv sync`。
+> 兄弟库(cartridge / eidolon-character / eidolon-character-service)以
+> **git 源(pin rev)** 作为第三方依赖安装(见各消费方 pyproject 的 `[tool.uv.sources]`),
+> monorepo 检出与单独 clone 行为一致。
+>
+> **库升级流程**:库仓 commit + push 后,消费方把其 pyproject 中对应 rev
+> 更新为新 commit,再 `uv sync`;最后在顶层更新子模块指针(见 §5)。
 
 ## 4. 克隆后验证
 
@@ -72,6 +79,22 @@ git push origin master
 
 **关键顺序:先推子模块、后推顶层。** 顶层指针必须指向远程上真实存在的 commit;否则其他机器拉取顶层后 `git submodule update` 失败(git-repository-management.md §6.2 为此问题的修复流程)。
 
+**改库时多一步(rev 更新)**:改动落在被其他仓依赖的库(如 cartridge、eidolon-character、
+eidolon-character-service)时,库仓 push 后还要更新**消费方 pyproject 里的 rev** 并单独提交消费方,
+否则消费方仍安装旧版本:
+
+```bash
+# 库仓:开发并推送
+cd format/Cartridge && git commit -m "fix: xxx" && git push origin master
+
+# 消费方:更新 rev 并推送
+cd ../../runtime/eidolon-runtime
+# 编辑 pyproject.toml,把 cartridge 的 rev 改为库仓新 commit
+uv sync && git add pyproject.toml uv.lock && git commit -m "chore: bump cartridge rev" && git push origin master
+
+# 最后顶层更新指针(§5 步骤 2)
+```
+
 ## 6. 双机并行同步
 
 两台机器同时开发时,动工前先拉最新,避免指针互相覆盖:
@@ -97,5 +120,7 @@ git push origin master
 | 分支策略 | 所有仓库默认直接在 `master` 上开发(git-repository-management.md §7.2) |
 | 提交边界 | 子项目改动提交到子项目仓库;顶层只提交指针与文档 |
 | 推送顺序 | 先子模块、后顶层 |
+| 依赖安装 | 各仓库独立 `uv sync`(git 源 pin rev,顶层无 workspace) |
+| 库升级 | 库仓 push → 消费方更新 rev → 消费方 push → 顶层更新指针 |
 | 新机器克隆 | 一条命令恢复全部 6 个仓库到指针固定版本 |
 | Windows 坑 | 克隆后务必验证 `git status -sb`,出现 `[gone]` 按 §6.1 修复 |

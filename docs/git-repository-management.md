@@ -136,6 +136,7 @@ git branch -vv
 - 协议层(Cartridge)定义版本号(`manifest.version`)
 - 扩展层(eidolon-character)通过 `VersionRange` 声明兼容的协议版本
 - 运行时层通过资源路由框架的 `MigrationGraph` 处理版本升级
+- 消费方 pyproject 以 **git 源(pin rev)** 声明兄弟库依赖,单独 clone 亦可复现
 - 顶层固定子模块指针,杜绝意外的 breaking change
 
 ## 6. 已知问题与解决方案
@@ -242,11 +243,13 @@ git config --global user.email "3330456284@qq.com"
 cd Eidolon
 git submodule add git@github.com:hakureireimuyo/eidolon-mind.git mind/eidolon-mind
 
-# 3. 加入 uv workspace(如需要)
-# 编辑 pyproject.toml,在 [tool.uv.workspace].members 中添加 "mind/eidolon-mind"
+# 3. 声明依赖(如需要)
+# 在消费方(如 eidolon-runtime)的 pyproject.toml 中:
+#   dependencies 增加 "eidolon-mind"
+#   [tool.uv.sources] 增加 eidolon-mind = { git = "...", rev = "<新仓 commit>" }
 
 # 4. 提交
-git add .gitmodules mind/eidolon-mind pyproject.toml
+git add .gitmodules mind/eidolon-mind
 git commit -m "feat: add eidolon-mind as submodule"
 
 # 5. 推送

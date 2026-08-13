@@ -90,7 +90,7 @@ Eidolon 采用多独立项目架构。拆分的根本理由不是"代码多了�
 
 - **eidolon-runtime(组合入口)**:Web 服务 + UI + Extension Registry + Context Compiler。只做组合和可视化,不包含领域逻辑。
 - **解释器子项目**(与资产类型 X 成对的 `eidolon-X-service`,如 eidolon-character-service):把资产 X 的数据块解释为类型化内存对象,并暴露其运行时能力(prompt 编译、序列化等),供组合入口按类型标签消费。**按需存在**——不需要类型化处理的资产走通用动态资源路径,不建解释器。
-- **领域能力子项目**(eidolon-mind / eidolon-world / eidolon-memory 等):各自是独立的纯库项目,实现具体的运行时能力,作为第三方库被 eidolon-runtime import 引用。各自独立发版。
+- **领域能力子项目**(eidolon-mind / eidolon-world / eidolon-memory 等):各自是独立的纯库项目,实现具体的运行时能力,作为第三方库被 eidolon-runtime import 引用。各自独立发版。**现行依赖机制**:消费方 pyproject 以 git 源(pin rev)声明(cartridge / eidolon-character / eidolon-character-service 即此模式,见各消费方 `[tool.uv.sources]`)。
 
 **eidolon-runtime 的核心能力**:
 - Extension Registry:发现、加载子项目,管理生命周期
