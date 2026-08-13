@@ -50,6 +50,12 @@ cartridge = { git = "ssh://git@github.com:hakureireimuyo/cartridge.git", rev = "
 
 rev 取库仓的完整 commit SHA(`git -C <库仓> rev-parse HEAD`),与顶层子模块指针同源更新。
 
+> 整条链的传播(逐仓改 pin + uv lock + commit + push + 顶层指针)已固化为
+> `scripts/propagate-rev.sh`(支持 `--dry-run` / `--no-sync`),一般情况直接:
+> ```bash
+> bash scripts/propagate-rev.sh
+> ```
+
 ## 3. 新子项目接入
 
 流程见 [docs/git-repository-management.md](../docs/git-repository-management.md) §8;
