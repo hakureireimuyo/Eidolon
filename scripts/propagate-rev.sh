@@ -12,6 +12,7 @@
 #   cartridge ──────────────────────┼→ eidolon-character-service
 #   eidolon-character ──────────────┘        └→ eidolon-runtime(dev 组也直 pin character)
 #   cartridge + eidolon-character → eidolon-studio
+#   eidolon-graph → eidolon-runtime(内核;pyproject 尚未 pin 时传播自动跳过并提示)
 #
 # 用法:
 #   bash scripts/propagate-rev.sh             # 完整传播 + venv 同步
@@ -54,12 +55,14 @@ REPOS=(
   "format/Cartridge|cartridge|"
   "asset-types/eidolon-character|eidolon-character|cartridge"
   "runtime/eidolon-character-service|eidolon-character-service|cartridge eidolon-character"
-  "runtime/eidolon-runtime|eidolon-runtime|eidolon-character eidolon-character-service"
+  "runtime/eidolon-graph|eidolon-graph|"
+  "runtime/eidolon-runtime|eidolon-runtime|eidolon-character eidolon-character-service eidolon-graph"
   "editor/eidolon-studio|eidolon-studio|cartridge eidolon-character"
 )
 # 持有 venv 的应用/服务仓(传播完成后 uv sync)
 VENV_REPOS=(runtime/eidolon-runtime editor/eidolon-studio)
 # provider 仓(工作区脏 → 中止);叶子仓(脏 → 仅跳过)
+# eidolon-graph 待消费方 pin 接入后加入 PROVIDER_PATHS(现无人 pin,脏工作区不应阻断传播)
 PROVIDER_PATHS=(format/Cartridge asset-types/eidolon-character runtime/eidolon-character-service)
 
 run() {  # 统一执行口(支持 dry-run)
@@ -71,6 +74,12 @@ run() {  # 统一执行口(支持 dry-run)
 }
 
 sha() { git -C "$TOP/$1" rev-parse HEAD; }
+
+sync_master_ref() {  # 仅 detached 检出时同步本地 master 引用;检出在 master 分支时 HEAD 即 master,强制更新会失败
+  if ! git -C "$TOP/$1" symbolic-ref -q HEAD >/dev/null 2>&1; then
+    run git -C "$TOP/$1" branch -f master HEAD
+  fi
+}
 
 # 预检:各子模块路径存在
 echo "==> 传播链检查(rev 取各子模块本地 HEAD)"
@@ -108,7 +117,7 @@ for entry in "${REPOS[@]}"; do
   elif git -C "$TOP/$path" merge-base --is-ancestor "$origin" "$head" 2>/dev/null; then
     echo "  - 本地领先(${head:0:7}),推送 origin master"
     run git -C "$TOP/$path" push origin HEAD:master
-    run git -C "$TOP/$path" branch -f master HEAD
+    sync_master_ref "$path"
   elif git -C "$TOP/$path" merge-base --is-ancestor "$head" "$origin" 2>/dev/null; then
     echo "✗ 本地落后于 origin/master,请先在该仓拉取更新,再重新传播"
     exit 1
@@ -155,7 +164,7 @@ for entry in "${REPOS[@]}"; do
       run git -C "$TOP/$path" add pyproject.toml uv.lock
       run git -C "$TOP/$path" commit -m "chore: ${updates}(rev 自动传播)"
       run git -C "$TOP/$path" push origin HEAD:master
-      run git -C "$TOP/$path" branch -f master HEAD
+      sync_master_ref "$path"
     else
       echo "  - pin 已对齐,无需更新"
     fi
