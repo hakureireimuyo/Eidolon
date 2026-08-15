@@ -11,3 +11,6 @@ dist/
 .venv/
 .pytest_cache/
 .coverage
+
+# VSCode代码统计插件数据
+.VSCodeCounter
