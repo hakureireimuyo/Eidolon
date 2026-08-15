@@ -16,3 +16,6 @@
 [submodule "runtime/eidolon-graph"]
 	path = runtime/eidolon-graph
 	url = git@github.com:hakureireimuyo/eidolon-graph.git
+[submodule "editor/eidolon-graph-editor"]
+	path = editor/eidolon-graph-editor
+	url = git@github.com:hakureireimuyo/eidolon-graph-editor.git
