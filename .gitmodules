@@ -22,3 +22,6 @@
 [submodule "asset-types/eidolon-graph-project"]
 	path = asset-types/eidolon-graph-project
 	url = git@github.com:hakureireimuyo/eidolon-graph-project.git
+[submodule "runtime/eidolon-llm"]
+	path = runtime/eidolon-llm
+	url = git@github.com:hakureireimuyo/eidolon-llm.git
