@@ -13,8 +13,8 @@
 #   eidolon-character ──────────────┘        └→ eidolon-runtime(dev 组也直 pin character)
 #   cartridge + eidolon-character → eidolon-studio
 #   cartridge → eidolon-graph-project(图工程存储:目录工程 + .cart 打包)
-#   eidolon-llm → eidolon-graph(LLM 能力库;内核节点封装层 nodes/llm 引用)
-#   eidolon-graph + eidolon-graph-project → eidolon-graph-editor
+#   capabilities/eidolon-llm → kernel/eidolon-graph(LLM 能力库;内核节点封装层 nodes/llm 引用)
+#   kernel/eidolon-graph + eidolon-graph-project → eidolon-graph-editor
 #     (编辑器:内核 git 源 pin + 工程存储 git 源 pin,headless 预览/运行会话)
 #   eidolon-graph → eidolon-runtime(内核;pyproject 尚未 pin 时传播自动跳过并提示)
 #
@@ -60,8 +60,8 @@ REPOS=(
   "asset-types/eidolon-character|eidolon-character|cartridge"
   "asset-types/eidolon-graph-project|eidolon-graph-project|cartridge"
   "runtime/eidolon-character-service|eidolon-character-service|cartridge eidolon-character"
-  "runtime/eidolon-llm|eidolon-llm|"
-  "runtime/eidolon-graph|eidolon-graph|eidolon-llm"
+  "capabilities/eidolon-llm|eidolon-llm|"
+  "kernel/eidolon-graph|eidolon-graph|eidolon-llm"
   "editor/eidolon-graph-editor|eidolon-graph-editor|eidolon-graph eidolon-graph-project"
   "runtime/eidolon-runtime|eidolon-runtime|eidolon-character eidolon-character-service eidolon-graph"
   "editor/eidolon-studio|eidolon-studio|cartridge eidolon-character"
@@ -70,7 +70,7 @@ REPOS=(
 VENV_REPOS=(runtime/eidolon-runtime editor/eidolon-studio editor/eidolon-graph-editor)
 # provider 仓(工作区脏 → 中止);叶子仓(脏 → 仅跳过)
 # eidolon-graph / eidolon-graph-project 自 eidolon-graph-editor pin 接入后即属 provider 仓
-PROVIDER_PATHS=(format/Cartridge asset-types/eidolon-character asset-types/eidolon-graph-project runtime/eidolon-character-service runtime/eidolon-graph)
+PROVIDER_PATHS=(format/Cartridge asset-types/eidolon-character asset-types/eidolon-graph-project runtime/eidolon-character-service kernel/eidolon-graph)
 
 run() {  # 统一执行口(支持 dry-run)
   if [ "$DRY_RUN" = 1 ]; then

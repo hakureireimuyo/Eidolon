@@ -13,15 +13,15 @@
 [submodule "runtime/eidolon-character-service"]
 	path = runtime/eidolon-character-service
 	url = git@github.com:hakureireimuyo/eidolon-character-service.git
-[submodule "runtime/eidolon-graph"]
-	path = runtime/eidolon-graph
-	url = git@github.com:hakureireimuyo/eidolon-graph.git
 [submodule "editor/eidolon-graph-editor"]
 	path = editor/eidolon-graph-editor
 	url = git@github.com:hakureireimuyo/eidolon-graph-editor.git
 [submodule "asset-types/eidolon-graph-project"]
 	path = asset-types/eidolon-graph-project
 	url = git@github.com:hakureireimuyo/eidolon-graph-project.git
-[submodule "runtime/eidolon-llm"]
-	path = runtime/eidolon-llm
+[submodule "kernel/eidolon-graph"]
+	path = kernel/eidolon-graph
+	url = git@github.com:hakureireimuyo/eidolon-graph.git
+[submodule "capabilities/eidolon-llm"]
+	path = capabilities/eidolon-llm
 	url = git@github.com:hakureireimuyo/eidolon-llm.git
