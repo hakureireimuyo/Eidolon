@@ -12,6 +12,7 @@
 #   cartridge ──────────────────────┼→ eidolon-character-service
 #   eidolon-character ──────────────┘        └→ eidolon-runtime(dev 组也直 pin character)
 #   cartridge + eidolon-character → eidolon-studio
+#   cartridge → eidolon-graph-project(图工程存储:目录工程 + .cart 打包)
 #   eidolon-graph → eidolon-graph-editor(编辑器;git 源 pin,headless 预览/运行会话)
 #   eidolon-graph → eidolon-runtime(内核;pyproject 尚未 pin 时传播自动跳过并提示)
 #
@@ -55,6 +56,7 @@ done
 REPOS=(
   "format/Cartridge|cartridge|"
   "asset-types/eidolon-character|eidolon-character|cartridge"
+  "asset-types/eidolon-graph-project|eidolon-graph-project|cartridge"
   "runtime/eidolon-character-service|eidolon-character-service|cartridge eidolon-character"
   "runtime/eidolon-graph|eidolon-graph|"
   "editor/eidolon-graph-editor|eidolon-graph-editor|eidolon-graph"
