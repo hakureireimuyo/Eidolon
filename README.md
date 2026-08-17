@@ -66,6 +66,7 @@ Eidolon 要构建的,是一个**持续运行、维护内部状态、按环境变
 
 - 全局哲学与项目定位:[docs/design-philosophy.md](docs/design-philosophy.md)
 - 设计决策总览:[docs/design-decisions-index.md](docs/design-decisions-index.md)
+- 内核、编辑器与运行时的三层定位:[docs/kernel-editor-runtime.md](docs/kernel-editor-runtime.md)
 - 执行模型与节点协议(理解一切的起点):内核仓库
   `docs/graph-execution-model.md` 与 `docs/node-protocol.md`
 - 各层模块与格式的详细说明:见对应仓库的 `docs/` 与 README

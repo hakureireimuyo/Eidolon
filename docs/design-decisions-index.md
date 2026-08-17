@@ -11,6 +11,7 @@
 | [剧情 / 世界 / 叙事引擎](./narrative-world-engine.md) | 世界/叙事 | 剧情=动态世界；事件/规则驱动；多路线规则生成；剧情包即插件 |
 | [叙事游戏引擎架构与 AI 职责分离](./narrative-game-engine.md) | 引擎架构 | ECS世界模型；三大编辑器；Action Intent→World Event循环；AI职责分离；双维度上下文管理 |
 | [项目职责与能力边界](./project-responsibilities.md) | 分层职责 | 四层职责边界；稳定进核心,不稳定成扩展；运行时解释器(X-service)与格式层(X)成对 |
+| [内核、编辑器与运行时](./kernel-editor-runtime.md) | 分层定位 | 内核=引擎、编辑器=设计工具、Runtime=运行框架(宿主层)；I/O 边界；Simulation/Presentation 双图 |
 
 ## 被推翻的观点 → 最终决定(本次整理已剔除推翻部分)
 
@@ -31,3 +32,6 @@
 | 上下文=压缩后的文本 | 上下文=Runtime根据Agent身份投影的数据视图 |
 | AI负责创造剧情 | 程序负责真实性(决定发生什么),AI负责表现力(如何表达) |
 | 剧情是固定分支树 | 剧情是事件图(Event Graph),条件触发,非阻塞 |
+| Runtime 是"图执行器"的扩展 | Runtime = 游戏运行框架(宿主层):装载项目、驱动循环、I/O 通道；内核提供运行能力,编辑器定义游戏 |
+| Runtime 缺"用户可见页面"→ Runtime 自己补 UI | 页面属于编辑器范畴；Runtime 提供 I/O 协议边界,不规定语义与表现;输入输出节点是编辑器的正式节点类型 |
+| 急着把 Runtime 做成"游戏应用" | Runtime 所缺能力等内核世界模型(World Kernel)成熟后再向上提供;Runtime 是内核的宿主层,不是内核的替代品 |
