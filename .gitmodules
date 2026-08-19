@@ -25,3 +25,6 @@
 [submodule "capabilities/eidolon-llm"]
 	path = capabilities/eidolon-llm
 	url = git@github.com:hakureireimuyo/eidolon-llm.git
+[submodule "kernel/eidolon_graph_ref"]
+	path = kernel/eidolon_graph_ref
+	url = git@github.com:hakureireimuyo/eidolon_graph_ref.git
