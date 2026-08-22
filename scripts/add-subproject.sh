@@ -9,8 +9,8 @@
 #   scripts/add-subproject.sh <子项目相对路径> [GitHub 仓库名]
 #
 # 示例:
-#   scripts/add-subproject.sh runtime/eidolon-mind eidolon-mind
-#   scripts/add-subproject.sh runtime/eidolon-mind   # 仓库名默认取目录名
+#   scripts/add-subproject.sh host/runtime/eidolon-mind eidolon-mind
+#   scripts/add-subproject.sh host/runtime/eidolon-mind   # 仓库名默认取目录名
 #
 # 前置条件:
 #   - 在 GitHub 上预先创建同名空仓库(脚本检测不到时会打印创建链接)

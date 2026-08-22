@@ -41,7 +41,7 @@ cd ../.. && bash scripts/propagate-rev.sh                        # 2. 一键传�
 - 脚本会 **push 各仓 origin master**(provider 仓、消费仓、主仓),不可撤销;
 - 幂等:pin 已对齐的仓自动跳过,不产生空提交;
 - 传播完成后**重启正在运行的服务**才加载新依赖(uvicorn 无 `--reload`);
-- 依赖图:`kernel/eidolon-graph → editor/eidolon-graph-editor`(git 源 pin);`runtime/eidolon-runtime` 目前未 pin 内核,脚本自动跳过并提示。
+- 依赖图:`kernel/eidolon-graph → host/editor/eidolon-graph-editor`(git 源 pin);`host/runtime/eidolon-runtime` 目前未 pin 内核,脚本自动跳过并提示。
 
 ## 2. add-subproject.sh — 接入新子项目
 
@@ -52,7 +52,7 @@ cd ../.. && bash scripts/propagate-rev.sh                        # 2. 一键传�
 ```bash
 scripts/add-subproject.sh <子项目相对路径> [GitHub 仓库名]   # 仓库名默认取目录名
 # 示例
-scripts/add-subproject.sh runtime/eidolon-mind eidolon-mind
+scripts/add-subproject.sh host/runtime/eidolon-mind eidolon-mind
 ```
 
 **前置条件**:先在 GitHub 创建同名**空仓库**(不要勾选 README/.gitignore/LICENSE),SSH key 已配置。
