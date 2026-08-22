@@ -1,0 +1,14 @@
+[project]
+name = "eidolon-host"
+version = "0.1.0"
+description = "Eidolon Host — 组合根:把 Kernel、DSL、插件、资产、工程文件和用户界面组合成完整运行环境的系统层"
+requires-python = ">=3.11"
+
+# Host 是 Eidolon 生态的组合根(Kernel 定义计算模型,DSL 定义节点语言,
+# Host 定义如何把外部世界装配进这个计算模型)。
+# runtime/ 与 editor/ 下的兄弟项目以 git 源 + pin rev 方式被依赖引用,
+# 与物理位置无关(独立 clone 一致,无路径耦合)。
+dependencies = []
+
+[tool.setuptools.packages.find]
+include = ["host*"]
