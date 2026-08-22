@@ -17,6 +17,7 @@
 #   kernel/eidolon-graph + eidolon-graph-project → eidolon-graph-editor
 #     (编辑器:内核 git 源 pin + 工程存储 git 源 pin,headless 预览/运行会话)
 #   eidolon-graph → eidolon-runtime(内核;pyproject 尚未 pin 时传播自动跳过并提示)
+#   eidolon_graph_ref → (最小参考内核;无消费者,仅主仓指针记录 + origin 推送)
 #
 # 用法:
 #   bash scripts/propagate-rev.sh             # 完整传播 + venv 同步
@@ -62,6 +63,7 @@ REPOS=(
   "runtime/eidolon-character-service|eidolon-character-service|cartridge eidolon-character"
   "capabilities/eidolon-llm|eidolon-llm|"
   "kernel/eidolon-graph|eidolon-graph|eidolon-llm"
+  "kernel/eidolon_graph_ref|eidolon_graph_ref|"
   "editor/eidolon-graph-editor|eidolon-graph-editor|eidolon-graph eidolon-graph-project"
   "runtime/eidolon-runtime|eidolon-runtime|eidolon-character eidolon-character-service eidolon-graph"
   "editor/eidolon-studio|eidolon-studio|cartridge eidolon-character"
