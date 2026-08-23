@@ -60,19 +60,19 @@ REPOS=(
   "format/Cartridge|cartridge|"
   "asset-types/eidolon-character|eidolon-character|cartridge"
   "asset-types/eidolon-graph-project|eidolon-graph-project|cartridge"
-  "host/runtime/eidolon-character-service|eidolon-character-service|cartridge eidolon-character"
+  "runtime/eidolon-character-service|eidolon-character-service|cartridge eidolon-character"
   "capabilities/eidolon-llm|eidolon-llm|"
   "kernel/eidolon-graph|eidolon-graph|eidolon-llm"
   "kernel/eidolon_graph_ref|eidolon_graph_ref|"
-  "host/editor/eidolon-graph-editor|eidolon-graph-editor|eidolon-graph eidolon-graph-project"
-  "host/runtime/eidolon-runtime|eidolon-runtime|eidolon-character eidolon-character-service eidolon-graph"
-  "host/editor/eidolon-studio|eidolon-studio|cartridge eidolon-character"
+  "editor/eidolon-graph-editor|eidolon-graph-editor|eidolon-graph eidolon-graph-project"
+  "runtime/eidolon-runtime|eidolon-runtime|eidolon-character eidolon-character-service eidolon-graph"
+  "editor/eidolon-studio|eidolon-studio|cartridge eidolon-character"
 )
 # 持有 venv 的应用/服务仓(传播完成后 uv sync)
-VENV_REPOS=(host/runtime/eidolon-runtime host/editor/eidolon-studio host/editor/eidolon-graph-editor)
+VENV_REPOS=(runtime/eidolon-runtime editor/eidolon-studio editor/eidolon-graph-editor)
 # provider 仓(工作区脏 → 中止);叶子仓(脏 → 仅跳过)
 # eidolon-graph / eidolon-graph-project 自 eidolon-graph-editor pin 接入后即属 provider 仓
-PROVIDER_PATHS=(format/Cartridge asset-types/eidolon-character asset-types/eidolon-graph-project host/runtime/eidolon-character-service kernel/eidolon-graph)
+PROVIDER_PATHS=(format/Cartridge asset-types/eidolon-character asset-types/eidolon-graph-project runtime/eidolon-character-service kernel/eidolon-graph)
 
 run() {  # 统一执行口(支持 dry-run)
   if [ "$DRY_RUN" = 1 ]; then

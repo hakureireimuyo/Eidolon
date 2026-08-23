@@ -22,7 +22,7 @@ Eidolon 生态的依赖管理:**每个仓库是独立 uv 项目**,兄弟库以 *
 ### 2.1 安装 / 更新依赖
 
 ```bash
-cd <仓库目录>          # 如 host/runtime/eidolon-runtime
+cd <仓库目录>          # 如 runtime/eidolon-runtime
 uv sync               # 创建 .venv 并安装依赖(含 dev extra)
 ```
 

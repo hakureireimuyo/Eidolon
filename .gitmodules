@@ -5,16 +5,16 @@
 	path = asset-types/eidolon-character
 	url = git@github.com:hakureireimuyo/eidolon-character.git
 [submodule "runtime/eidolon-runtime"]
-	path = host/runtime/eidolon-runtime
+	path = runtime/eidolon-runtime
 	url = git@github.com:hakureireimuyo/eidolon-runtime.git
 [submodule "editor/eidolon-studio"]
-	path = host/editor/eidolon-studio
+	path = editor/eidolon-studio
 	url = git@github.com:hakureireimuyo/eidolon-studio.git
 [submodule "runtime/eidolon-character-service"]
-	path = host/runtime/eidolon-character-service
+	path = runtime/eidolon-character-service
 	url = git@github.com:hakureireimuyo/eidolon-character-service.git
 [submodule "editor/eidolon-graph-editor"]
-	path = host/editor/eidolon-graph-editor
+	path = editor/eidolon-graph-editor
 	url = git@github.com:hakureireimuyo/eidolon-graph-editor.git
 [submodule "asset-types/eidolon-graph-project"]
 	path = asset-types/eidolon-graph-project
