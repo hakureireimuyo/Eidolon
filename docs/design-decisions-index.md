@@ -1,17 +1,19 @@
 # 设计决策总览索引(运行时 / 世界 / 多智能体方向)
 
-> 本索引包含根目录 `docs/` 下的文档；运行时相关设计文档位于 `runtime/eidolon-runtime/docs/`:运行时核心设计、引擎核心(上下文流动的管理者)、状态模型/上下文管理、多智能体与多模态、模型选型与验证、流式调度(事件协议/工具内循环/内嵌占位符)。
+> 本索引包含根目录 `docs/` 下的文档；运行时相关设计文档位于 `runtime/eidolon-runtime/docs/`:运行时核心设计、引擎核心(上下文流动的管理者)、状态模型/上下文管理、多智能体与多模态、模型选型与验证、流式调度(事件协议/工具内循环/内嵌占位符)。宿主相关设计文档位于 `host/docs/`:宿主开发总纲(组合根定位、装配对象与宿主服务定义、开发阶段)。
 
 ## 文档导航
 
 | 文档 | 知识域 | 一句话 |
 |------|--------|--------|
 | [核心架构哲学与项目定位](./design-philosophy.md) | 全局哲学 | Eidolon 是叙事/模拟运行时,LLM 是表现层不是大脑,从零实现 |
+| [职责地图:正交维度与依赖轴](./responsibility-map.md) | 全局架构 | 十部分正交维度(非分层);数据/执行/创作运行/表达四轴;内核=最小语义机器;资产系统=共同世界基础;Editor 运行同一套世界 |
 | [数据容器与项目工程层](./data-container-project-layer.md) | 数据层 | 数据容器=世界工程数据层；源数据模型无关；Engine>Project>Assets |
 | [剧情 / 世界 / 叙事引擎](./narrative-world-engine.md) | 世界/叙事 | 剧情=动态世界；事件/规则驱动；多路线规则生成；剧情包即插件 |
 | [叙事游戏引擎架构与 AI 职责分离](./narrative-game-engine.md) | 引擎架构 | ECS世界模型；三大编辑器；Action Intent→World Event循环；AI职责分离；双维度上下文管理 |
 | [项目职责与能力边界](./project-responsibilities.md) | 分层职责 | 四层职责边界；稳定进核心,不稳定成扩展；运行时解释器(X-service)与格式层(X)成对 |
-| [内核、编辑器与运行时](./kernel-editor-runtime.md) | 分层定位 | 内核=引擎、编辑器=设计工具、Runtime=运行框架(宿主层)；I/O 边界；Simulation/Presentation 双图 |
+| [能力定位:实现层分配](./capability-placement.md) | 分层职责 | 节点实现三类来源(内核/脚本/插件);资产系统本体=内核级(未实现),Host 只做环境装配;表现层=资产(预留,暂无页面编辑系统);打包归资产类型层+编辑器 |
+| [内核、编辑器与运行时](./kernel-editor-runtime.md) | 分层定位 | 内核=引擎、编辑器=设计工具、Runtime=运行框架(由 Host 装配)；I/O 边界；Simulation/Presentation 双图 |
 
 ## 被推翻的观点 → 最终决定(本次整理已剔除推翻部分)
 
@@ -35,3 +37,4 @@
 | Runtime 是"图执行器"的扩展 | Runtime = 游戏运行框架(宿主层):装载项目、驱动循环、I/O 通道；内核提供运行能力,编辑器定义游戏 |
 | Runtime 缺"用户可见页面"→ Runtime 自己补 UI | 页面属于编辑器范畴；Runtime 提供 I/O 协议边界,不规定语义与表现;输入输出节点是编辑器的正式节点类型 |
 | 急着把 Runtime 做成"游戏应用" | Runtime 所缺能力等内核世界模型(World Kernel)成熟后再向上提供;Runtime 是内核的宿主层,不是内核的替代品 |
+| Runtime 是"内核的宿主层" | Host(组合根)是宿主:装配 Editor/Runtime/Project 与 Common Host Services;"宿主侧能力"(节点注册/资产装配/插件加载/实时调度/并发)归 Host 职责;Runtime 降格为 Host 装配的运行部件,职责不变(宿主开发总纲,host/docs/) |

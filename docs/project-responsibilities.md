@@ -1,7 +1,7 @@
 # 项目职责与能力边界
 
 > 本文档说明 Eidolon 引擎生态中各层的**职责边界与设计原则**。
-> 仓库管理策略见 [`git-repository-management.md`](./git-repository-management.md)；资源所有权模型见 [`resource-management.md`](./resource-management.md)。
+> 仓库管理策略见 [`git-repository-management.md`](./git-repository-management.md)；资源所有权模型见 [`resource-management.md`](./resource-management.md)；跨层能力的实现层分配(资产关系 / 打包 / 节点扩展)见 [`capability-placement.md`](./capability-placement.md)。
 
 ## 1. 核心命题:稳定进核心,不稳定成扩展
 
@@ -94,6 +94,8 @@ Runtime 是内核的宿主层,不是内核的替代品;Runtime 提供 I/O 能力
 **定位**:引擎的运行核心。运行时层不是一个单一项目,而是**一个组合入口(eidolon-runtime)+ 多个能力子项目**。
 
 - **eidolon-runtime(组合入口 / 宿主层)**:装载项目、驱动运行循环、建立 I/O 通道、管理生命周期;Web 服务只是当前宿主形态。只做组合,不包含领域逻辑,**不定义 I/O 的语义与表现**(见 [内核、编辑器与运行时](./kernel-editor-runtime.md))。
+
+> **术语更新(2026-08-23)**:"宿主层"的称谓已移交 Host(组合根,见 `host/README.md` 与 `host/docs/host-development.md`)。Runtime 是 Host 装配的运行部件,本节所述职责(装载、驱动、I/O、生命周期)不变;"宿主侧能力"(节点注册、资产装配、插件加载、实时调度、并发)归 Host 职责。
 - **解释器子项目**(与资产类型 X 成对的 `eidolon-X-service`,如 eidolon-character-service):把资产 X 的数据块解释为类型化内存对象,并暴露其运行时能力(prompt 编译、序列化等),供组合入口按类型标签消费。**按需存在**——不需要类型化处理的资产走通用动态资源路径,不建解释器。
 - **领域能力子项目**(eidolon-mind / eidolon-world / eidolon-memory 等):各自是独立的纯库项目,实现具体的运行时能力,作为第三方库被 eidolon-runtime import 引用。各自独立发版。**现行依赖机制**:消费方 pyproject 以 git 源(pin rev)声明(cartridge / eidolon-character / eidolon-character-service 即此模式,见各消费方 `[tool.uv.sources]`)。
 

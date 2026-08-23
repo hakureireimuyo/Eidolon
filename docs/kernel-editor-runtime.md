@@ -67,6 +67,8 @@ Project Editor        把上述东西组合成一个完整项目
 
 ## 4. Runtime:游戏运行的框架(宿主层)
 
+> **术语更新(2026-08-23)**:"宿主层"的称谓已移交 Host(组合根,见 `host/README.md` 与 `host/docs/host-development.md`)。Runtime 是 Host 装配的运行部件,本节职责描述不变。
+
 Runtime 不是"运行一个 RPG 的程序",甚至不是"运行一个 AI 剧情游戏的程序",而是:
 
 > **解释并执行一个图项目,同时向外部系统提供结构化输入输出接口的通用运行时。**

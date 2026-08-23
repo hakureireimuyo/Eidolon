@@ -62,9 +62,13 @@ Eidolon 要构建的,是一个**持续运行、维护内部状态、按环境变
 **稳定进核心,不稳定成扩展**——协议层与内核是最稳定的两层,领域知识与
 具体能力分别落在资产类型层与能力库,由宿主组装成完整世界。
 
+> 分层图只是依赖示意;各部分的完整职责地图(正交维度与依赖轴,回答"每部分
+> 允许知道什么")见 [docs/responsibility-map.md](docs/responsibility-map.md)。
+
 ## 进一步阅读
 
 - 全局哲学与项目定位:[docs/design-philosophy.md](docs/design-philosophy.md)
+- 职责地图与依赖轴:[docs/responsibility-map.md](docs/responsibility-map.md)
 - 设计决策总览:[docs/design-decisions-index.md](docs/design-decisions-index.md)
 - 内核、编辑器与运行时的三层定位:[docs/kernel-editor-runtime.md](docs/kernel-editor-runtime.md)
 - 执行模型与节点协议(理解一切的起点):内核仓库
